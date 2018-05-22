@@ -68,9 +68,7 @@ def checkWin(tableGrid, player, tablelength):
         return True
 
 def checkHorizontal(tableGrid, player):
-    win = False
     for row in tableGrid:
-        print(row)
         for cIndex, column in enumerate(row):
             if cIndex < 6:
                 count = 0
@@ -81,9 +79,7 @@ def checkHorizontal(tableGrid, player):
                     else:
                         break
                 if count > 4:
-                    win = True
-        if win == True:
-            return True 
+                    return True
     return False
                 
 def checkVertical(tableGrid, player, x, y, tablelength):
@@ -115,7 +111,11 @@ for i in range (1, 102, 1):
         while True:
             x = int(input("Player 1, input x: "))
             y = int(input("Player 1, input y: "))
-            if tableGrid[x-1][y-1] != 0:
+            if x < 1 or x > 10:
+                print("Not valid")
+            elif y < 1 or y > 10:
+                print("Not valid")
+            elif tableGrid[y-1][x-1] != 0:
                 print("You can't place a piece here!")
             else:
                 break  
@@ -129,7 +129,11 @@ for i in range (1, 102, 1):
         while True:
             x = int(input("Player 2, input x: "))
             y = int(input("Player 2, input y: "))
-            if tableGrid[x-1][y-1] != 0:
+            if x < 1 or x > 10:
+                print("Not valid")
+            elif y < 1 or y > 10:
+                print("Not valid")
+            elif tableGrid[y-1][x-1] != 0:
                 print("You can't place a piece here!")
             else:
                 break
