@@ -45,11 +45,13 @@ def makeTurtle(shape, name, speed):
 def moveP1(x, y, name):
     thisOne = makeTurtle("circle", name, 0)
     thisOne.penup()
+    thisOne.color("green")
     thisOne.goto(coordsx[x], coordsy[y])
 
 def moveP2(x, y, name):
     thisOne = makeTurtle("square", name, 0)
     thisOne.penup()
+    thisOne.color("blue")
     thisOne.goto(coordsx[x], coordsy[y])
    
 def initiateTableGrid(tableGrid, tableSize):
@@ -269,7 +271,7 @@ class SimpleBot:
             for column in range(0, tableLength):
                 enemyReward = playerReward[row][column]
                 if enemyReward > 2:
-                    enemyReward = enemyReward*3
+                    enemyReward = enemyReward*2.5
                 values.append(rewardGrid[row][column] + enemyReward)
                 valueX.append(column)
                 valueY.append(row)
