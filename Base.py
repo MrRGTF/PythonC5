@@ -64,7 +64,6 @@ def initiateTableGrid(tableGrid, tableSize):
             row.append(0)
         tableGrid.append(row)
 
-
 #------------------Win Conditions------------------#
 def checkWin(tableGrid, player, tableLength, x, y):
     if checkHorizontal(tableGrid, player, x, y, tableLength) or checkVertical(tableGrid, player, x, y, tableLength) or checkDiagonal(tableGrid, player, x-1, y-1, tableLength):
@@ -147,18 +146,126 @@ def checkDiagonal2(tableGrid, player, x, y, tableLength):
 
     return False
 
-#------------------Simple Bot------------------#
-
-def bot(tableGrid, tableLength):
-    for x1 in range (0, tableLength):
-        for y1 in range (0, tableLength):
-            None
-            """if tableGrid[y1][x1] != 0:
-                #BOT CHECKING WIN CONDITIONS: ADD THIS
-                None
-            else:"""
+def randBot():
     botmovex = random.randint(1, 10)
     botmovey = random.randint(1, 10)
+    return botmovex, botmovey
+
+#------------------Simple Bot------------------#
+class SimpleBot:
+    def __init__(self, player, tableLength):
+        reward = []
+        initiateTableGrid(reward, 10)
+        self.player = player
+        self.tableLength = tableLength
+        
+    def botCheckHorizontal(tableGrid, player, x, y, tableLength):
+        count = 0
+        for number in range(x, 0):
+            if tableGrid[y][number] == player:
+                count += 1
+            else:
+                break
+        
+        for number in range(x, tableLength):
+            if tableGrid[y][number] == player:
+                count += 1
+            else:
+                break
+                
+        return count
+                
+    def botCheckVertical(tableGrid, player, x, y, tableLength):
+        count = 0
+        for number in range(y, 0):
+            if tableGrid[number][x] == player:
+                count += 1
+            else:
+                break
+        
+        for number in range(y, tableLength):
+            if tableGrid[number][x] == player:
+                count += 1
+            else:
+                break
+        
+        return count
+
+    def botCheckDiagonal(tableGrid, player, x, y, tableLength):
+        return botCheckDiagonal1(tableGrid, player, x, y, tableLength) + botCheckDiagonal2(tableGrid, player, x, y, tableLength)
+
+    def botCheckDiagonal1(tableGrid, player, x, y, tableLength):
+        count = 0
+        while True:
+            for number in range(0, tableLength):
+                try:
+                    if tableGrid[y-number][x-number] == player:
+                        count += 1
+                    else:
+                        break
+                except:
+                    break
+                    
+        while True:
+            for number in range(0, tableLength):
+                try:
+                    if tableGrid[y+number][x+number] == player:
+                        count += 1
+                    else:
+                        break
+                except:
+                    break
+                    
+        return count
+
+    def botCheckDiagonal2(tableGrid, player, x, y, tableLength):
+        count = 0
+        while True:
+            for number in range(0, tableLength):
+                try:
+                    if tableGrid[y+number][x-number] == player:
+                        count += 1
+                    else:
+                        break
+                except:
+                    break
+                    
+        while True:
+            for number in range(0, tableLength):
+                try:
+                    if tableGrid[y-number][x+number] == player:
+                        count += 1
+                    else:
+                        break
+                except:
+                    break
+                    
+        return count
+
+    def calcReward(tableGrid, rewardGrid, player, x, y, tableLength):
+        botH = botCheckHorizontal(tableGrid, player, x, y, tableLength)
+        botV = botCheckVertical(tableGrid, player, x, y, tableLength)
+        botD = botCheckDiagonal(tableGrid, player, x, y, tableLength)
+        rewardGrid[x][y] = botH + botV + botD
+        
+    def findReward(tableGrid, rewardGrid, player, tableLength):
+        for x2 in range (0, tableLength):
+            for y2 in range (0, tableLength):
+                calcReward(tableGrid, rewardGrid, x2, y2, tableLength)
+        print(rewardGrid)
+        hiX = 0
+        hiY = 0
+        for row in range (0, tableLength):
+            for column in range (0, tableLength):
+                if rewardGrid[hiY][hiX] < rewardGrid[row][column]:
+                    hiY = row
+                    hiX = column
+                else: None
+        return hiX, hiY
+
+    def core(tableGrid):
+        x, y = findReward(tableGrid, reward, self.player, self.tableLength)
+        return x, y
 
 #========================Code========================#
 
@@ -203,9 +310,9 @@ def humanVSHuman():
                 sys.exit(1)
 
 def humanVSBot():
+    aBot = SimpleBot(2, tableLength)
     for i in range (1, 102, 1):
         if i % 2 == 1:
-        
             while True:
                 x = int(input("Player 1, input x: "))
                 y = int(input("Player 1, input y: "))
@@ -215,27 +322,28 @@ def humanVSBot():
                     print("You can't place a piece here!")
                 else:
                     break
-                
             moveP1(x, y, i)
             tableGrid[y-1][x-1] = 1
             if checkWin(tableGrid, 1, tableSize, x, y) == True:
                 print("Player 1 won")
                 finish = input("Press enter to exit")
                 sys.exit(1)
+                
         elif i % 2 == 0:
-            bot(tableGrid, tableSize)
-            moveP2(botmovex, botmovey, i)
+            botx, boty = aBot.core(tableGrid)
+            moveP2(botx, boty, i)
 
 def botVSBot():
     None
 
 while True:
     menu = input("Input HH or 1 for human vs human, HB or 2 for human vs bot, BB or 3 for bot vs bot: ")
-    if menu == "HH" or menu == 1:
+    if menu == "HH" or menu == "1":
         humanVSHuman()
-    elif menu == "HB" or menu == 2:
+    elif menu == "HB" or menu == "2":
         humanVSBot()
-    elif menu == "BB" or menu == 3:
+    elif menu == "BB" or menu == "3":
         botVSBot()
     else: print("That's not a valid input!")
     
+    print("It's a draw!")
