@@ -8,7 +8,11 @@ coordsy = {1: 225, 2: 175, 3: 125, 4: 75, 5: 25, 6: -25, 7: -75, 8: -125, 9: -17
 tableSize = 10
 tableGrid = []
 
+numberWidth = 5
+
 #========================Functions========================#
+
+#------------------Display Functions------------------#
 
 def drawField():
     turtle1 = turtle.Turtle()
@@ -41,6 +45,8 @@ def makeTurtle(shape, name, speed):
     name.shape(shape)
     name.speed(speed)
     return name
+
+#------------------Game Functions------------------#
 
 def moveP1(x, y, name):
     thisOne = makeTurtle("circle", name, 0)
@@ -270,8 +276,7 @@ class SimpleBot:
         for row in range(0, tableLength):
             for column in range(0, tableLength):
                 enemyReward = playerReward[row][column]
-                if enemyReward > 2:
-                    enemyReward = enemyReward*2.5
+                enemyReward = (1/9)*(3**enemyReward)
                 values.append(rewardGrid[row][column] + enemyReward)
                 valueX.append(column)
                 valueY.append(row)
