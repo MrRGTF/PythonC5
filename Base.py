@@ -1,14 +1,17 @@
-import turtle, sys
+import turtle, sys, random
 
 #========================Variables========================#
 
-tableSize = 10
-
 coordsx = {1: -225, 2: -175, 3: -125, 4: -75, 5: -25, 6: 25, 7: 75, 8: 125, 9: 175, 10: 225}
-
 coordsy = {1: 225, 2: 175, 3: 125, 4: 75, 5: 25, 6: -25, 7: -75, 8: -125, 9: -175, 10: -225}
 
+tableSize = 10
 tableGrid = []
+
+global botmovex
+botmovex = 0
+global botmovey
+botmovey = 0
 
 #========================Functions========================#
 
@@ -144,11 +147,62 @@ def checkDiagonal2(tableGrid, player, x, y, tableLength):
 
     return False
 
+#------------------Simple Bot------------------#
+
+def bot(tableGrid, tableLength):
+    for x1 in range (0, tableLength):
+        for y1 in range (0, tableLength):
+            None
+            """if tableGrid[y1][x1] != 0:
+                #BOT CHECKING WIN CONDITIONS: ADD THIS
+                None
+            else:"""
+    botmovex = random.randint(1, 10)
+    botmovey = random.randint(1, 10)
+
 #========================Code========================#
 
 drawField()
 initiateTableGrid(tableGrid, 10)
 def humanVSHuman():
+    for i in range (1, 102, 1):
+        if i % 2 == 1:
+            while True:
+                x = int(input("Player 1, input x: "))
+                y = int(input("Player 1, input y: "))
+                if x < 1 or x > 10 or y < 1 or y > 10:
+                    print("Not valid")
+                elif tableGrid[y-1][x-1] != 0:
+                    print("You can't place a piece here!")
+                else:
+                    break
+                
+            moveP1(x, y, i)
+            tableGrid[y-1][x-1] = 1
+            if checkWin(tableGrid, 1, tableSize, x, y) == True:
+                print("Player 1 won")
+                finish = input("Press enter to exit")
+                sys.exit(1)
+                
+        elif i % 2 == 0:
+            while True:
+                x = int(input("Player 2, input x: "))
+                y = int(input("Player 2, input y: "))
+                if x < 1 or x > 10 or y < 1 or y > 10:
+                    print("Not valid")
+                elif tableGrid[y-1][x-1] != 0:
+                    print("You can't place a piece here!")
+                else:
+                    break
+                
+            moveP2(x, y, i)
+            tableGrid[y-1][x-1] = 2
+            if checkWin(tableGrid, 2, tableSize, x, y) == True:
+                print("Player 2 won")
+                finish = input("Press enter to exit")
+                sys.exit(1)
+
+def humanVSBot():
     for i in range (1, 102, 1):
         if i % 2 == 1:
         
@@ -169,26 +223,8 @@ def humanVSHuman():
                 finish = input("Press enter to exit")
                 sys.exit(1)
         elif i % 2 == 0:
-            
-            while True:
-                x = int(input("Player 2, input x: "))
-                y = int(input("Player 2, input y: "))
-                if x < 1 or x > 10 or y < 1 or y > 10:
-                    print("Not valid")
-                elif tableGrid[y-1][x-1] != 0:
-                    print("You can't place a piece here!")
-                else:
-                    break
-                
-            moveP2(x, y, i)
-            tableGrid[y-1][x-1] = 2
-            if checkWin(tableGrid, 2, tableSize, x, y) == True:
-                print("Player 2 won")
-                finish = input("Press enter to exit")
-                sys.exit(1)
-
-def humanVSBot():
-    None
+            bot(tableGrid, tableSize)
+            moveP2(botmovex, botmovey, i)
 
 def botVSBot():
     None
