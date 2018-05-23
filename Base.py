@@ -309,7 +309,7 @@ def humanVSHuman():
                 finish = input("Press enter to exit")
                 sys.exit(1)
 
-def humanVSBot():
+def humanVSBot(tableGrid, tableLength):
     aBot = SimpleBot(2, tableLength)
     for i in range (1, 102, 1):
         if i % 2 == 1:
@@ -341,7 +341,7 @@ while True:
     if menu == "HH" or menu == "1":
         humanVSHuman()
     elif menu == "HB" or menu == "2":
-        humanVSBot()
+        humanVSBot(tableGrid, tableLength)
     elif menu == "BB" or menu == "3":
         botVSBot()
     else: print("That's not a valid input!")
