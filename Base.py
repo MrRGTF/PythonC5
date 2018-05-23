@@ -269,7 +269,7 @@ class SimpleBot:
             for column in range(0, tableLength):
                 enemyReward = playerReward[row][column]
                 if enemyReward > 2:
-                    enemyReward = enemyReward*2
+                    enemyReward = enemyReward*3
                 values.append(rewardGrid[row][column] + enemyReward)
                 valueX.append(column)
                 valueY.append(row)
